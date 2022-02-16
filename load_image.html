@@ -1,0 +1,289 @@
+<html>
+	<head>
+		<script>
+			const IMAGE_WIDTH = 384;
+			var canvas = document.createElement("canvas");
+			var ctx = canvas.getContext("2d");
+			var imageData;
+			
+			var condensed_data = [];
+			/*
+			var profiles = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+							[1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0],
+							[1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0],
+							[1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0],
+							[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+							[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+							[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1],
+							[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1],
+							[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+							[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]];
+			*/
+			
+			/*
+			var profiles = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+							[0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+							[0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0],
+							[0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0],
+							[0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0],
+							[0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0],
+							[0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0],
+							[0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0],
+							[0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0],
+							[0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0],
+							[0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0],
+							[1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0],
+							[1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+							[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+							[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]];
+			*/
+			
+			/*
+			var profiles = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+							[0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+							[0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], 
+							[0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0], 
+							[0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0], 
+							[0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0], 
+							[0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0], 
+							[0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0],
+							[0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0],
+							[0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0],
+							[0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0],
+							[0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0],
+							[0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0],
+							[1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0],
+							[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0],
+							[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+							[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]];
+			*/
+			
+			/*
+			var profiles = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+							[0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+							[0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0],
+							[0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0],
+							[0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0],
+							[0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0],
+							[1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0],
+							[1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1],
+							[1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1],
+							[1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1],
+							[1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1],
+							[1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1],
+							[1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+							[1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+							[1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+							[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]];
+			*/
+			
+			function my_setup() {
+				document.getElementById('myFile').onchange = function (evt) {
+					var tgt = evt.target || window.event.srcElement,
+						files = tgt.files;
+
+					// FileReader support
+					if (FileReader && files && files.length) {
+						var fr = new FileReader();
+						fr.readAsDataURL(files[0]);
+						fr.onload = () => showImage(fr);
+					}
+				}
+			}
+
+			function showImage(fileReader) {
+				var img = document.getElementById("myImage");
+				img.src = fileReader.result;
+				img.onload = () => getImageData(img);
+			}
+
+			function getImageData(img) {
+				document.getElementById('container').appendChild(canvas);
+				
+				ratio = img.height / img.width;
+				new_height = Math.round(IMAGE_WIDTH * ratio)
+				
+				
+				padded_height = Math.ceil(new_height / 24) * 24;
+				
+				canvas.width = IMAGE_WIDTH;
+				canvas.height = new_height;
+				
+				ctx.drawImage(img, 0, 0, IMAGE_WIDTH, new_height);
+				imageData = ctx.getImageData(0, 0, IMAGE_WIDTH, new_height);
+				var i;
+				for (i = 0; i < imageData.data.length; i += 4) {
+				  //imageData.data[i+0] ^= 0xff;
+				  //imageData.data[i+1] ^= 0xff;
+				  //imageData.data[i+2] ^= 0xff;
+				  //for(var y=0; y< 3; ++y) {
+					var val = imageData.data[i+0];
+					//val &= 0xe0;
+					imageData.data[i+0] = val;
+					imageData.data[i+1] = val;	
+					imageData.data[i+2] = val;	
+				  //}
+				  imageData.data[i+3] = 0xff;
+				}
+				
+				// now make padded image, pad with red
+				canvas.height = padded_height;
+				ctx.fillStyle = 'red';
+				ctx.fillRect(0, 0, IMAGE_WIDTH, padded_height);				
+								
+				ctx.putImageData(imageData, 0, 0);
+				
+				//console.log("336 " + padded_height);
+				
+				canvas.setAttribute('style', 'border: 2px solid blue');
+				
+				// dump new padded data
+				//imageData = ctx.getImageData(0, 0, 168, padded_height);
+				//console.log(imageData.data);
+				
+				func_print();
+			}
+			/*
+			function re_format() {
+				var final_d = [];
+				var i = 0;
+				
+				for(x= 0; x< condensed_data.length; x += 8) {
+					mask = 0;
+					if(condensed_data[x + 0]) mask |= 0x80;
+					if(condensed_data[x + 1]) mask |= 0x40;
+					if(condensed_data[x + 2]) mask |= 0x20;
+					if(condensed_data[x + 3]) mask |= 0x10;
+					if(condensed_data[x + 4]) mask |= 0x08;
+					if(condensed_data[x + 5]) mask |= 0x04;
+					if(condensed_data[x + 6]) mask |= 0x02;
+					if(condensed_data[x + 7]) mask |= 0x01;
+					
+					final_d[i] = mask;
+					++i;
+				}
+				
+				console.log(final_d);
+			}
+			
+			function process_24x24(img_d) {
+				var d = [];
+				var x1, y1;
+				var s1, d2;
+				s1 = 0;
+				d2 = 0;
+				//condensed_data = [];
+				//index = 0;
+				for(x1 = 0; x1< 24; ++x1) {
+					d2 = x1 * 4;
+					for(y1 = 0; y1 < 24; ++y1) {
+						d[d2 + 0] = img_d.data[s1 + 0];
+						d[d2 + 1] = img_d.data[s1 + 1];
+						d[d2 + 2] = img_d.data[s1 + 2];
+						d[d2 + 3] = img_d.data[s1 + 3];
+						
+						// condensed data
+						var val = 0x00;
+						if(img_d.data[s1 + 1] > 127) val = 0xff;
+						condensed_data.unshift(val);
+						//++index;
+						
+						s1 += 4;
+						d2 += (24 * 4);
+						
+					}
+				}
+				//for(x1 = 0; x1 <= d.length; ++x1) img_d.data[x1] = d[x1];
+				return img_d;
+			}
+			*/
+			function process88(segment) {
+				var sum = 0;
+				var elements = 0;
+				for(o = 0; o < segment.data.length; o += 4) {
+					sum += segment.data[o];
+					++elements;
+				}
+				
+				if(elements) sum /= elements;
+				sum = Math.floor(sum);
+				
+				sum >>= 4;
+				var index = 0;
+				
+				for(o = 0; o < segment.data.length; o += 4) {
+					
+					var dst = 0;
+					if(sum) {
+						dst = 255;
+						sum--;
+					}
+					
+					
+					//dst = profiles[sum][index++];
+					//if(dst) dst = 255;
+					segment.data[o+0] = dst;
+					segment.data[o+1] = dst;
+					segment.data[o+2] = dst;
+				}
+
+				return segment;
+			}
+			
+			function func_print() {	
+				var x, y;
+				
+				// reload image
+				ctx.fillStyle = 'white';
+				ctx.fillRect(0, 0, IMAGE_WIDTH, padded_height);				
+								
+				ctx.putImageData(imageData, 0, 0);
+				
+				// process
+				
+				for(y=0; y< canvas.height; y += 4) {
+					for(x=0; x< canvas.width; x += 4) {
+						segment = ctx.getImageData(x, y, 4, 4);
+						segment = process88(segment);
+						ctx.putImageData(segment, x, y);
+					}
+				}
+				// reset data
+				//final_d = [];
+				//condensed_data = [];
+				// break into blocks 24
+				//var x, y;
+				//for(y=0; y< canvas.height; y += 24) {
+				//	for(x=0; x< 168; x += 24) {
+						// get section
+				//		segment = ctx.getImageData(x, y, 24, 24);
+				//		segment = process_24x24(segment);
+						//ctx.putImageData(segment, x, y);
+						//ctx.fillStyle = 'blue';
+						//ctx.fillRect(x, y, 8, 8);
+				//	}
+				//}
+				
+				//console.log(condensed_data);
+				//re_format();
+			}
+		</script>
+	</head>
+	<body onload="my_setup()">
+		<input type="file" id="myFile">Load image</input>
+		<br>
+		<img id="myImage" style="border:black 1px" />
+		<img id="myImage2" style="border:black 2px" />
+		<dir id='container'></dir>
+	</body>
+</html>
